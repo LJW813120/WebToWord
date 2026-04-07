@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API助手</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔍 API助手</h1>
+      <div class="status" id="status">就绪</div>
+    </header>
+    
+    <main>
+      <section class="control-panel">
+        <div class="server-config">
+          <label for="serverUrl">服务器地址:</label>
+          <input type="text" id="serverUrl" placeholder="http://localhost:3000" />
+          <button id="testConnection" class="btn btn-secondary">测试连接</button>
+        </div>
+        
+        <div class="capture-controls">
+          <button id="startCapture" class="btn btn-primary">
+            <span class="icon">▶</span> 开始捕获
+          </button>
+          <button id="stopCapture" class="btn btn-danger" disabled>
+            <span class="icon">⏹</span> 停止捕获
+          </button>
+          <button id="clearRequests" class="btn btn-secondary">
+            <span class="icon">🗑</span> 清空
+          </button>
+        </div>
+      </section>
+      
+      <section class="requests-panel">
+        <div class="panel-header">
+          <h2>已捕获的请求 (<span id="requestCount">0</span>)</h2>
+          <div class="filter-controls">
+            <input type="text" id="filterUrl" placeholder="筛选URL..." />
+            <select id="filterMethod">
+              <option value="">所有方法</option>
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="requests-list" id="requestsList">
+          <div class="empty-state">暂无捕获的请求</div>
+        </div>
+      </section>
+      
+      <section class="actions-panel">
+        <button id="uploadSelected" class="btn btn-success" disabled>
+          <span class="icon">📤</span> 上传选中项到服务器
+        </button>
+        <button id="uploadAll" class="btn btn-success" disabled>
+          <span class="icon">📤</span> 上传全部
+        </button>
+      </section>
+    </main>
+    
+    <footer>
+      <div class="info">
+        <span id="connectionStatus" class="disconnected">● 未连接</span>
+        <span id="version">v1.0.0</span>
+      </div>
+    </footer>
+  </div>
+  
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>请求详情</h3>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

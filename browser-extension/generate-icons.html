@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>生成扩展图标</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 { color: #667eea; }
+    canvas {
+      border: 1px solid #ddd;
+      margin: 10px;
+    }
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .icon-row {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .icon-info {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 扩展图标生成器</h1>
+    <p>点击下方按钮下载PNG格式的图标文件，然后保存到 browser-extension/icons/ 目录</p>
+    
+    <div class="icon-row">
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <div class="icon-info">
+        <strong>icon16.png</strong> - 16x16像素
+        <br>
+        <button onclick="downloadIcon(16)">下载 icon16.png</button>
+      </div>
+    </div>
+    
+    <div class="icon-row">
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <div class="icon-info">
+        <strong>icon48.png</strong> - 48x48像素
+        <br>
+        <button onclick="downloadIcon(48)">下载 icon48.png</button>
+      </div>
+    </div>
+    
+    <div class="icon-row">
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <div class="icon-info">
+        <strong>icon128.png</strong> - 128x128像素
+        <br>
+        <button onclick="downloadIcon(128)">下载 icon128.png</button>
+      </div>
+    </div>
+    
+    <hr>
+    <button onclick="downloadAll()" style="width: 100%; font-size: 18px; padding: 15px;">
+      📦 下载所有图标
+    </button>
+  </div>
+
+  <script>
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      
+      const radius = size * 0.2;
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.45}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('API', size / 2, size / 2 + size * 0.05);
+    }
+    
+    drawIcon(document.getElementById('icon16'), 16);
+    drawIcon(document.getElementById('icon48'), 48);
+    drawIcon(document.getElementById('icon128'), 128);
+    
+    function downloadIcon(size) {
+      const canvas = document.getElementById('icon' + size);
+      const link = document.createElement('a');
+      link.download = 'icon' + size + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    function downloadAll() {
+      downloadIcon(16);
+      setTimeout(() => downloadIcon(48), 100);
+      setTimeout(() => downloadIcon(128), 200);
+    }
+  </script>
+</body>
+</html>
